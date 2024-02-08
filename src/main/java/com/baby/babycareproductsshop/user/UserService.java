@@ -82,7 +82,9 @@ public class UserService {
         if (vo.getUnregisterFl() == 1) {
             throw new RestApiException(AuthErrorCode.UNREGISTER_USER);
         }
-        MyPrincipal myPrincipal = new MyPrincipal(vo.getIuser());
+        MyPrincipal myPrincipal = MyPrincipal.builder()
+                .iuser(vo.getIuser())
+                .build();
         String at = jwtTokenProvider.generateAccessToken(myPrincipal);
         String rt = jwtTokenProvider.generateRefreshToken(myPrincipal);
 
