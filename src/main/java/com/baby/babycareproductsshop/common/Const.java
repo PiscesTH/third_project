@@ -20,7 +20,7 @@ public class Const {
     public static final String NOT_ALLOWED_PASSWORD = "비밀번호는 공백을 제외한 영어와 숫자, 특수문자를 하나 이상 포함한 8~16자리이어야 합니다.";
     public static final String NOT_ALLOWED_PHONE_NUMBER = "올바르지 않은 전화번호 형식입니다.";
     public static final String NOT_ALLOWED_EMAIL = "올바르지 않은 이메일 형식입니다.";
-    public static final String NOT_ALLOWED_CHILDREN_COUNT = "아이 정보는 최소 1명 최대 3명까지 입력할 수 있습니다.";
+    public static final String NOT_ALLOWED_CHILDREN_COUNT = "아이 정보는 최소 1명 입력해주세요.";
 
     public static final String rtName = "rtk";
 }

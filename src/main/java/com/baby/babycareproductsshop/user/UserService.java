@@ -18,12 +18,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static com.baby.babycareproductsshop.common.Const.rtName;
 
@@ -40,6 +42,7 @@ public class UserService {
     private final AppProperties appProperties;
     private final MyCookieUtils myCookieUtils;
     private final AuthenticationFacade authenticationFacade;
+    private final RedisTemplate<String, String> redisTemplate;
 
     //회원가입
     @Transactional
@@ -91,6 +94,13 @@ public class UserService {
         int rtCookieMaxAge = appProperties.getJwt().getRefreshCookieMaxAge();
         myCookieUtils.deleteCookie(res, rtName);
         myCookieUtils.setCookie(res, rtName, rt, rtCookieMaxAge);
+        log.info("rt : {}", rt);
+
+        String iuser = String.valueOf(vo.getIuser());
+        redisTemplate.opsForValue().set(iuser, rt, 1296000, TimeUnit.SECONDS);
+
+        String redisRt = redisTemplate.opsForValue().get(iuser);
+        log.info("redisRt : {}", redisRt);
 
         return UserSignInVo.builder()
                 .result(Const.SIGN_IN_SUCCESS)
@@ -196,15 +206,17 @@ public class UserService {
                     .build();
         }
         String token = cookie.getValue();
-        if (!jwtTokenProvider.isValidateToken(token)) {
-            return UserSignInVo.builder()
-                    .result(Const.FAIL)
-                    .accessToken(null)
-                    .build();
-        }
 
         MyUserDetails myUserDetails = (MyUserDetails) jwtTokenProvider.getUserDetailsFromToken(token);
         MyPrincipal myPrincipal = myUserDetails.getMyPrincipal();
+        String tokenInRedis = redisTemplate.opsForValue().get("33");
+        //String.valueOf(myPrincipal.getIuser())
+        log.info("tokenInRedis : {}", tokenInRedis);
+
+        if (!token.equals(tokenInRedis) || !jwtTokenProvider.isValidateToken(token)) {
+            throw new RestApiException(AuthErrorCode.INVALID_REFRESH_TOKEN);
+        }
+
 
         String at = jwtTokenProvider.generateAccessToken(myPrincipal);
 

@@ -48,7 +48,7 @@ public class UserSignUpDto {
     private String email;
 
     @Schema(title = "자녀 정보")
-    @Size(min = 1, max = 3, message = NOT_ALLOWED_CHILDREN_COUNT)
+    @Size(min = 1, message = NOT_ALLOWED_CHILDREN_COUNT)
     private List<@Valid UserChildDto> children;
 
     @Schema(title = "우편 번호")
