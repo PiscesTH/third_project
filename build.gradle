@@ -44,6 +44,8 @@ dependencies {
     testImplementation 'org.projectlombok:lombok'
     /* redis dependency */
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    //email
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
 }
 
 tasks.named('test') {
