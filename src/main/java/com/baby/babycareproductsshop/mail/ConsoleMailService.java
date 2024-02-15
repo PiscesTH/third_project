@@ -1,6 +1,6 @@
 package com.baby.babycareproductsshop.mail;
 
-import com.baby.babycareproductsshop.mail.model.EmailMessage;
+import com.baby.babycareproductsshop.mail.model.EmailMessageDto;
 import com.baby.babycareproductsshop.mail.model.MailSender;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,13 +10,12 @@ import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
-@Profile("local")
 @RequiredArgsConstructor
 public class ConsoleMailService implements MailSender {
     private final JavaMailSender javaMailSender;
 
     @Override
-    public void send(EmailMessage emailMessage) {
-        log.info("sent email: {}", emailMessage.getMessage());
+    public void send(EmailMessageDto emailMessageDto) {
+        log.info("send email: {}", emailMessageDto.getMessage());
     }
 }
