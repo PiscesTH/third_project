@@ -16,6 +16,7 @@ public class ConsoleMailService implements MailSender {
 
     @Override
     public void send(EmailMessageDto emailMessageDto) {
-        log.info("send email: {}", emailMessageDto.getMessage());
+        log.info("email - to : {}, subject : {}, message : {}",
+                emailMessageDto.getTo().toString(), emailMessageDto.getSubject(), emailMessageDto.getMessage());
     }
 }
