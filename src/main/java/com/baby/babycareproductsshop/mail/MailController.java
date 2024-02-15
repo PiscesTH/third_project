@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/admin/mail")
+@RequestMapping("/api/admin/mail")
 @Tag(name = "메일 API", description = "메일 관련 파트")
 public class MailController {
     private final ConsoleMailService consoleMailService;
@@ -27,7 +27,7 @@ public class MailController {
     }
 
     @Operation(summary = "회원 메일 발송 기능")
-    @PostMapping("/send")
+    @PostMapping
     public void sendTest(@RequestBody EmailMessageDto dto) {
         htmlMailService.send(dto);
     }
