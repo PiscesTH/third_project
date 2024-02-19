@@ -9,18 +9,25 @@ import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+
+import java.security.SecureRandom;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class HtmlMailService implements MailSender {
     private final JavaMailSender javaMailSender;
+    private final RedisTemplate<String, String> redisTemplate;
 
-    @Value("${spring.mail.username}")
-    private String MY_EMAIL;
+    @Value("${spring.mail.auth-code-expiration-millis}")
+    private String expirationDuration;
+    private final String AUTH_CODE_PREFIX = "AuthCode_";
+//    @Value("${spring.mail.username}")
+//    private String MY_EMAIL;
 
     @Override
     public void send(EmailMessageDto emailMessageDto) {
@@ -38,5 +45,25 @@ public class HtmlMailService implements MailSender {
             log.error("email send was failed", e);
             throw new RestApiException(CommonErrorCode.TO_SEND_EMAIL_FAIL);
         }
+    }
+
+    public String createEmailAuthCode() {
+        SecureRandom sr = new SecureRandom();
+        return String.valueOf(sr.nextInt(100000, 999999));
+    }
+
+    public void sendAuthCode(String email) {
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        String authCode = createEmailAuthCode();
+        try {
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+            mimeMessageHelper.setSubject("나나빛 인증코드 메일입니다.");
+            mimeMessageHelper.setText(authCode);
+            mimeMessageHelper.setTo(email);
+        } catch (MessagingException e) {
+            log.error("email send was failed", e);
+            throw new RestApiException(CommonErrorCode.TO_SEND_EMAIL_FAIL);
+        }
+
     }
 }
