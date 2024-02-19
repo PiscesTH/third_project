@@ -23,7 +23,7 @@ public class HtmlMailService implements MailSender {
     private final JavaMailSender javaMailSender;
     private final RedisTemplate<String, String> redisTemplate;
 
-    @Value("${spring.mail.auth-code-expiration-millis}")
+    @Value("${spring.mail.properties.mail.auth-code-expiration-millis}")
     private String expirationDuration;
     private final String AUTH_CODE_PREFIX = "AuthCode_";
 //    @Value("${spring.mail.username}")

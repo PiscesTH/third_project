@@ -42,18 +42,21 @@ public class UserEntity extends BaseEntity {
     private String email;
 
     @Column(length = 50)
-    @ColumnDefault("0")
+    @ColumnDefault("'0'")
     private Integer unregisterFl;
 
     @NotNull
     @Enumerated(value = EnumType.STRING)
     @Column
-    @ColumnDefault("USER")
+    @ColumnDefault("'USER'")
     private RoleEnum role;
 
     @NotNull
     @Enumerated(value = EnumType.STRING)
     @Column
-    @ColumnDefault("LOCAL")
+    @ColumnDefault("'LOCAL'")
     private ProviderTypeEnum providerType;
+
+    @Column(length = 100)
+    private String adminMemo;
 }

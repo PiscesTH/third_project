@@ -52,7 +52,7 @@ class UserServiceTest {
 
     @Test
     void postSignUp() {
-        when(userMapper.selSignInInfoByUid(any())).thenReturn(null);
+        when(userMapper.selSignInInfoByUid(any(), any())).thenReturn(null);
         when(passwordEncoder.encode(any())).thenReturn("password");
         when(userMapper.insUser(any())).thenReturn(1);
         when(childMapper.insUserChildren(any())).thenReturn(2);
@@ -62,7 +62,7 @@ class UserServiceTest {
         dto.setChildren(new ArrayList<>());
         ResVo resVo = service.postSignUp(dto);
 
-        verify(userMapper).selSignInInfoByUid(any());
+        verify(userMapper).selSignInInfoByUid(any(), any());
         verify(passwordEncoder).encode(any());
         verify(userMapper).insUser(any());
         verify(addressMapper).insUserAddress(any());
@@ -91,16 +91,16 @@ class UserServiceTest {
 
     @Test
     void postCheckUid() {
-        when(userMapper.selSignInInfoByUid(any())).thenReturn(null);
+        when(userMapper.selSignInInfoByUid(any(), any())).thenReturn(null);
 
         ResVo resVo = service.postCheckUid(new UserCheckUidDto());
 
-        verify(userMapper).selSignInInfoByUid(any());
+        verify(userMapper).selSignInInfoByUid(any(), any());
     }
 
     @Test
     void postSignIn() {
-        when(userMapper.selSignInInfoByUid(any())).thenReturn(new UserSignInProcDto());
+        when(userMapper.selSignInInfoByUid(any(), any())).thenReturn(new UserSignInProcDto());
         when(passwordEncoder.matches(any(),any())).thenReturn(true);
         when(jwtTokenProvider.generateAccessToken(any())).thenReturn("at");
         when(jwtTokenProvider.generateRefreshToken(any())).thenReturn("rt");

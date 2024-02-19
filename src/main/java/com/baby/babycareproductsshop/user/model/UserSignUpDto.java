@@ -7,13 +7,19 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 import static com.baby.babycareproductsshop.common.Const.*;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Schema(title = "회원가입 시 필요한 사용자 데이터")
 public class UserSignUpDto {
     @JsonIgnore
@@ -63,4 +69,9 @@ public class UserSignUpDto {
     @NotBlank(message = ADDRESS_DETAIL_IS_BLANK)
     private String addressDetail;
 
+    @JsonIgnore
+    private String providerType;
+
+    @JsonIgnore
+    private String role;
 }

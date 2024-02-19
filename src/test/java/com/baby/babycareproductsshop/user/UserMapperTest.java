@@ -49,7 +49,7 @@ class UserMapperTest {
     @DisplayName("sel sign in info by uid")
     void selSignInInfoByUid() {
         String uid = "winter";
-        UserSignInProcDto dto = mapper.selSignInInfoByUid(uid);
+        UserSignInProcDto dto = mapper.selSignInInfoByUid(uid, "LOCAL");
         assertNotNull(dto);
         assertEquals(20 ,dto.getIuser());
     }

@@ -1,6 +1,7 @@
 package com.baby.babycareproductsshop.user.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -20,4 +21,9 @@ public class UserSelToModifyVo {
     private String email;
     @Schema(title = "자녀 정보")
     private List<UserChildVo> children;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @Schema(title = "주소 정보")
+    private List<UserSelAddressVo> addresses;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private String uid;
 }

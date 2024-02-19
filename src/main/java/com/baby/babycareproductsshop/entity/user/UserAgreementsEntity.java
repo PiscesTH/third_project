@@ -2,6 +2,7 @@ package com.baby.babycareproductsshop.entity.user;
 
 import com.baby.babycareproductsshop.entity.CreatedAtEntity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -14,15 +15,14 @@ public class UserAgreementsEntity extends CreatedAtEntity {
 
     @ManyToOne
     @MapsId("iclause")
-    @JoinColumn(name = "iclause", referencedColumnName = "iclause", columnDefinition = "BIGINT UNSIGNED")
+    @JoinColumn(name = "iclause", columnDefinition = "BIGINT UNSIGNED")
     private UserSignupClauseEntity userSignupClauseEntity;
 
     @ManyToOne
     @MapsId("iuser")
-    @JoinColumn(name = "iuser", referencedColumnName = "iuser", columnDefinition = "BIGINT UNSIGNED")
+    @JoinColumn(name = "iuser", columnDefinition = "BIGINT UNSIGNED")
     private UserEntity userEntity;
 
-    @Column(columnDefinition = "CHAR(1) CHECK IN ('Y', 'N')")
-    @ColumnDefault("Y")
+    @Column(columnDefinition = "CHAR(2) CHECK(agreement IN ('Y', 'N'))")
     private String agreement;
 }

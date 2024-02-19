@@ -24,8 +24,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.security.SecureRandom;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import static com.baby.babycareproductsshop.common.Const.rtName;
@@ -70,7 +70,7 @@ public class UserService {
 
     //아이디 중복 체크
     public ResVo postCheckUid(UserCheckUidDto dto) {
-        UserSignInProcDto result = userMapper.selSignInInfoByUid(dto.getUid());
+        UserSignInProcDto result = userMapper.selSignInInfoByUid(dto.getUid(), "LOCAL");
         if (result != null) {
             throw new RestApiException(AuthErrorCode.DUPLICATED_UID);
         }
@@ -79,7 +79,7 @@ public class UserService {
 
     //로그인
     public UserSignInVo postSignIn(HttpServletResponse res, UserSignInDto dto) {
-        UserSignInProcDto vo = userMapper.selSignInInfoByUid(dto.getUid());
+        UserSignInProcDto vo = userMapper.selSignInInfoByUid(dto.getUid(), "LOCAL");
         if (vo == null || !passwordEncoder.matches(dto.getUpw(), vo.getUpw())) {
             throw new RestApiException(AuthErrorCode.LOGIN_FAIL);
         }
@@ -199,19 +199,18 @@ public class UserService {
 
     //accessToken 재발급
     public UserSignInVo getRefreshToken(HttpServletRequest req) {
-        Cookie cookie = myCookieUtils.getCookie(req, rtName);
-        if (cookie == null) {
+        Optional<Cookie> cookie = myCookieUtils.getCookie(req, rtName);
+        if (cookie.isEmpty()) {
             return UserSignInVo.builder()
                     .result(Const.FAIL)
                     .accessToken(null)
                     .build();
         }
-        String token = cookie.getValue();
+        String token = cookie.get().getValue();
 
         MyUserDetails myUserDetails = (MyUserDetails) jwtTokenProvider.getUserDetailsFromToken(token);
         MyPrincipal myPrincipal = myUserDetails.getMyPrincipal();
-        String tokenInRedis = redisTemplate.opsForValue().get("33");
-        //String.valueOf(myPrincipal.getIuser())
+        String tokenInRedis = redisTemplate.opsForValue().get(authenticationFacade.getLoginUserPk());
         log.info("tokenInRedis : {}", tokenInRedis);
 
         if (!token.equals(tokenInRedis) || !jwtTokenProvider.isValidateToken(token)) {

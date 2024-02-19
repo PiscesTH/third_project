@@ -50,6 +50,8 @@ dependencies {
     //implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     //jpa
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    // social login dependency
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 }
 
 tasks.named('test') {

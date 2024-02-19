@@ -9,7 +9,7 @@ import java.util.List;
 public interface UserMapper {
     int insUser(UserSignUpDto dto);
     UserSelMyInfoVo selMyInfo(int iuser);
-    UserSignInProcDto selSignInInfoByUid(String uid);
+    UserSignInProcDto selSignInInfoByUid(String uid, String providerType);
     UserSelToModifyVo selUserInfoByIuser(int iuser);
     List<UserClauseVo> selClause();
     int delUser(int iuser);
