@@ -1,6 +1,7 @@
 package com.baby.babycareproductsshop.user;
 
 import com.baby.babycareproductsshop.common.ProviderTypeEnum;
+import com.baby.babycareproductsshop.common.RoleEnum;
 import com.baby.babycareproductsshop.entity.user.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 

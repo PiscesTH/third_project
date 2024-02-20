@@ -47,7 +47,8 @@ public class SecurityConfiguration {
                                         "/api/product/cart",
                                         "/api/product/login-main"
                                 ).authenticated()
-                                .requestMatchers("/api/admin", "api/admin/**").hasRole("ADMIN")
+                                .requestMatchers("/api/admin").permitAll()
+                                .requestMatchers("/api/admin/**").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.PUT, "/api/board").authenticated()
                                 .requestMatchers(HttpMethod.DELETE, "/api/board").authenticated()
                                 .requestMatchers(HttpMethod.GET, "/api/board/write").authenticated()
@@ -58,13 +59,13 @@ public class SecurityConfiguration {
                     except.authenticationEntryPoint(new JwtAuthenticationEntryPoint())
                             .accessDeniedHandler(new JwtAccessDeniedHandler());
                 })
-                .oauth2Login(oath2 -> oath2.authorizationEndpoint(auth -> auth.baseUri("/oauth2/authorization")
-                                        .authorizationRequestRepository(requestCookieRepository)
-                                ).redirectionEndpoint(redirection -> redirection.baseUri("/*/oauth2/code/*"))
-                                .userInfoEndpoint(userinfo -> userinfo.userService(customOAuth2UserService))
-                                .successHandler(successHandler)
-                                .failureHandler(failureHandler)
-                )
+//                .oauth2Login(oath2 -> oath2.authorizationEndpoint(auth -> auth.baseUri("/oauth2/authorization")
+//                                        .authorizationRequestRepository(requestCookieRepository)
+//                                ).redirectionEndpoint(redirection -> redirection.baseUri("/*/oauth2/code/*"))
+//                                .userInfoEndpoint(userinfo -> userinfo.userService(customOAuth2UserService))
+//                                .successHandler(successHandler)
+//                                .failureHandler(failureHandler)
+//                )
                 .build();
     }
 
